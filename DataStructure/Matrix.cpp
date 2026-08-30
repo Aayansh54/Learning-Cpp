@@ -122,7 +122,7 @@ main()
     cout << "CREATION OF THE FIRST MATRIX:" << endl;
     m1.create();
     m1.display();
-    // m1.transpose();
+    m1.transpose();
     cout << "CREATION OF THE SECOND MATRIX:" << endl;
     m2.create();
     m2.display();
