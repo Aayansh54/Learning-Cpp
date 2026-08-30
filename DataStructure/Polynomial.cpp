@@ -38,7 +38,7 @@ void Polynomial ::display()
     {
         cout << t[i].coeff << "x^" << t[i].exp << "+";
     }
-    cout << "\b \b";
+    cout << "\b \b" << endl;
 
     // OR
     //  for(int i = 0 ; i < n - 1 ; i++){
@@ -59,7 +59,6 @@ void Polynomial ::degree()
     }
     cout << endl;
     cout << "The degree of the polynomial " << " is " << max << endl;
-    ;
 }
 
 void Polynomial ::evaluate()
@@ -79,59 +78,67 @@ void Polynomial ::evaluate()
 void Polynomial ::add(Polynomial p1, Polynomial p2)
 {
     int i = 0, j = 0, k = 0;
-    int n1, n2;
-    n1 = p1.n;
-    n2 = p2.n;
-    while (i > n1 && j > n2)
+    int n1 = p1.n;
+    int n2 = p2.n;
+    while (i < n1 && j < n2)
     {
-        if (p1.t[i].exp == p2.t[i].exp)
+        if (p1.t[i].exp == p2.t[j].exp)
         {
             t[k].coeff = p1.t[i].coeff + p2.t[j].coeff;
-            t[k].exp = p1.t[i].exp;
+            t[k].exp = p2.t[j].exp;
             i++;
             j++;
             k++;
         }
-
-        else if (p1.t[i].exp > p2.t[i].exp)
+        else if (p1.t[i].exp > p2.t[j].exp)
         {
             t[k].coeff = p1.t[i].coeff;
             t[k].exp = p1.t[i].exp;
             i++;
             k++;
         }
-
-        else if (p1.t[i].exp < p2.t[i].exp)
+        else
         {
-            t[k].coeff = p2.t[i].coeff;
-            t[k].exp = p2.t[i].exp;
+            t[k].coeff = p2.t[j].coeff;
+            t[k].exp = p2.t[j].exp;
             j++;
             k++;
         }
     }
-    while (i > n1 && j < n2)
-    {
-        t[k].coeff = p2.t[j].coeff;
-        t[k].exp = p2.t[j].exp;
-        j++;
-        k++;
-    }
-    while (j > n2 && i < n1)
+    while (i < n1)
     {
         t[k].coeff = p1.t[i].coeff;
         t[k].exp = p1.t[i].exp;
         i++;
         k++;
     }
+    while (j < n2)
+    {
+        t[k].coeff = p2.t[j].coeff;
+        t[k].exp = p2.t[j].exp;
+        j++;
+        k++;
+    }
+    n = k;
 }
 
 int main()
 {
     Polynomial p1;
+    Polynomial p2;
+    Polynomial sum;
+
     p1.create();
     p1.display();
+
+    p2.create();
+    p2.display();
+
     p1.degree();
     p1.evaluate();
 
+    sum.add(p1, p2);
+    cout << "\nthe additin of two polynomial is: ";
+    sum.display();
     return 0;
 }
