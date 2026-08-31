@@ -14,6 +14,7 @@ public:
     void display();
     void add(SparseMatrix s1, SparseMatrix s2);
     void fasttranspose(SparseMatrix s1);
+    void simpleTranspose(SparseMatrix s1);
 };
 
 void SparseMatrix ::fasttranspose(SparseMatrix s1)
@@ -48,6 +49,33 @@ void SparseMatrix ::fasttranspose(SparseMatrix s1)
         Sparse[location][2] = s1.Sparse[i][2];
 
         index[column_el]++;
+    }
+}
+
+void SparseMatrix ::simpleTranspose(SparseMatrix s1)
+{
+    row = s1.Sparse[0][1];
+    column = s1.Sparse[0][0];
+    nze = s1.Sparse[0][2];
+
+    Sparse[0][0] = row;
+    Sparse[0][1] = column;
+    Sparse[0][2] = nze;
+
+    int k = 1;
+    for (int j = 0; j < row; j++)
+    {
+        for (int i = 1; i <= nze; i++)
+        {
+            if (s1.Sparse[i][1] == j)
+            {
+                Sparse[k][0] = s1.Sparse[i][1];
+                Sparse[k][1] = s1.Sparse[i][0];
+                Sparse[k][2] = s1.Sparse[i][2];
+
+                k++;
+            }
+        }
     }
 }
 void SparseMatrix ::create()
