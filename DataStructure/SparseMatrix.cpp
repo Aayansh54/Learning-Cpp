@@ -13,9 +13,43 @@ public:
     void create();
     void display();
     void add(SparseMatrix s1, SparseMatrix s2);
-    void transpose(SparseMatrix s1);
+    void fasttranspose(SparseMatrix s1);
 };
 
+void SparseMatrix ::fasttranspose(SparseMatrix s1)
+{
+    row = s1.Sparse[0][1];
+    column = s1.Sparse[0][0];
+    nze = s1.Sparse[0][2];
+
+    Sparse[0][0] = row;
+    Sparse[0][1] = column;
+    Sparse[0][2] = nze;
+    int total[10] = {0};
+    int index[10];
+
+    for (int i = 1; i <= nze; i++)
+    {
+        total[s1.Sparse[i][1]]++;
+    }
+
+    index[0] = 1;
+    for (int i = 1; i < row; i++)
+    {
+        index[i] = index[i - 1] + total[i - 1];
+    }
+
+    for (int i = 1; i <= nze; i++)
+    {
+        int column_el = s1.Sparse[i][1];
+        int location = index[column_el];
+        Sparse[location][0] = s1.Sparse[i][1];
+        Sparse[location][1] = s1.Sparse[i][0];
+        Sparse[location][2] = s1.Sparse[i][2];
+
+        index[column_el]++;
+    }
+}
 void SparseMatrix ::create()
 {
     cout << "Enter the number of rows :";
