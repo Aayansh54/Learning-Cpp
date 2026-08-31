@@ -37,16 +37,74 @@ void SparseMatrix ::create()
 }
 void SparseMatrix ::display()
 {
-    for (int i = 0; i < nze; i++)
+    for (int i = 0; i <= nze; i++)
     {
         cout << Sparse[i][0] << " " << Sparse[i][1] << " " << Sparse[i][2] << endl;
     }
 }
 
-void SparseMatrix ::transpose(SparseMatrix s1)
+void SparseMatrix ::add(SparseMatrix s1, SparseMatrix s2)
 {
-    int total[s1]
+    row = s1.row;
+    column = s1.column;
+    Sparse[0][0] = row;
+    Sparse[0][1] = column;
+    int i = 1, j = 1, k = 1;
+    if (s1.row == s2.row && s2.column == s2.column)
+    {
+        while (i <= s1.nze && j <= s2.nze)
+        {
+            if (s1.Sparse[i][0] == s2.Sparse[j][0] && s1.Sparse[i][1] == s2.Sparse[j][1])
+            {
+                Sparse[k][0] = s1.Sparse[i][0];
+                Sparse[k][1] = s1.Sparse[i][1];
+                Sparse[k][2] = s1.Sparse[i][2] + s2.Sparse[j][2];
+                i++;
+                j++;
+                k++;
+            }
+            else if (s1.Sparse[i][0] < s2.Sparse[j][0] || (s1.Sparse[i][0] == s2.Sparse[j][0] && s1.Sparse[i][1] < s2.Sparse[j][1]))
+            {
+                Sparse[k][0] = s1.Sparse[i][0];
+                Sparse[k][1] = s1.Sparse[i][1];
+                Sparse[k][2] = s1.Sparse[i][2];
+                i++;
+                k++;
+            }
+            else
+            {
+                Sparse[k][0] = s2.Sparse[j][0];
+                Sparse[k][1] = s2.Sparse[j][1];
+                Sparse[k][2] = s2.Sparse[j][2];
+                j++;
+                k++;
+            }
+        }
+        while (i <= s1.nze)
+        {
+            Sparse[k][0] = s1.Sparse[i][0];
+            Sparse[k][1] = s1.Sparse[i][1];
+            Sparse[k][2] = s1.Sparse[i][2];
+            i++;
+            k++;
+        }
+        while (j <= s2.nze)
+        {
+            Sparse[k][0] = s1.Sparse[j][0];
+            Sparse[k][1] = s1.Sparse[j][1];
+            Sparse[k][2] = s1.Sparse[j][2];
+            j++;
+            k++;
+        }
+        nze = k - 1;
+        Sparse[0][2] = nze;
+    }
+    else
+    {
+        cout << "The addition is not possible";
+    }
 }
+
 int main()
 {
     SparseMatrix M1;
